@@ -63,7 +63,7 @@ Each project and notebook focuses on:
 ## 🔗 Related Repository
 - **Python Agentic Learning**  
   Core Python foundations and reusable problem-solving logic  
-  👉 https://github.com/veeraamudhan/python-agentic-learning
+  👉 https://github.com/veeraamudhan/python-agentic-learning-
 
 ---
 
