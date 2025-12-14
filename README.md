@@ -62,4 +62,4 @@ Each project and notebook focuses on:
 ---
 
 ## 📬 Contact
-LinkedIn: (add later)  
+LinkedIn: www.linkedin.com/in/veera-amudhan-ramalingam 
