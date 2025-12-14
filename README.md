@@ -24,7 +24,7 @@ emphasis on real-world datasets and business understanding.
 
 - **python-basics/**  
   Core Python concepts with practice notebooks.
-
+      present in the python-agentic-AI repo
 - **numpy-pandas/**  
   Data manipulation, preprocessing, and EDA examples.
 
@@ -60,6 +60,22 @@ Each project and notebook focuses on:
 5. Interpreting results in a business context
 
 ---
+## 🔗 Related Repository
+- **Python Agentic Learning**  
+  Core Python foundations and reusable problem-solving logic  
+  👉 https://github.com/veeraamudhan/python-agentic-learning
+
+---
+
+## 🚀 Learning Approach
+Each notebook or project focuses on:
+1. Understanding the data
+2. Cleaning and preprocessing
+3. Extracting insights
+4. Applying models where applicable
+5. Explaining results in a business-friendly way
+
+----
 
 ## 📬 Contact
 LinkedIn: www.linkedin.com/in/veera-amudhan-ramalingam 
