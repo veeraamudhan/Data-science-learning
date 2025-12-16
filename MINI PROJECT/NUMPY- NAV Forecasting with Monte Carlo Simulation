@@ -1,0 +1,90 @@
+print('Mini Project: NAV Forecasting with Monte Carlo Simulation')
+'''
+A very realistic, real-world finance simulation.
+
+💼 Mini Project: 30-Day NAV Forecasting using Monte Carlo Simulation
+🎯 Objective
+
+Simulate 1000 possible future NAV paths for a mutual fund based on:
+
+Mean daily return
+
+Volatility (std dev)
+
+Number of days to forecast
+
+This is exactly what fund managers use to predict future NAV.
+
+🧾 Assumptions
+
+Starting NAV: 100
+
+Mean daily return: 0.1% (0.001)
+
+Daily volatility: 1.5% (0.015)
+
+Days: 30
+
+Simulations: 1000
+
+
+----------------------------
+
+'''
+import numpy as np
+
+# Simulation parameters
+starting_nav = 100
+mean_return = 0.001
+volatility = 0.015
+days = 30
+simulations = 1000
+
+final_navs = []
+
+for i in range(simulations):
+    # Step 1: Generate random daily returns
+    daily_returns = np.random.normal(mean_return, volatility, days)
+
+    # Step 2: Convert to NAV movement
+    nav_series = starting_nav * np.cumprod(1 + daily_returns)
+
+    # Step 3: Store final day NAV
+    final_navs.append(nav_series[-1])
+
+final_navs = np.array(final_navs)
+
+# Final results
+avg_nav = np.mean(final_navs)
+best_nav = np.max(final_navs)
+worst_nav = np.min(final_navs)
+nav_volatility = np.std(final_navs)
+
+print("===== Monte Carlo NAV Forecast =====")
+print ('starting_nav = ', starting_nav)
+print('mean_return = ', mean_return)
+print('volatility = ', volatility)
+print('days = ', days)
+print('simulations = ',simulations)
+print("Expected NAV after 30 days:", round(avg_nav, 2))
+print("Best Case NAV:", round(best_nav, 2))
+print("Worst Case NAV:", round(worst_nav, 2))
+print("Volatility of Outcomes:", round(nav_volatility, 2))
+
+# Value at Risk (5% worst case)
+VaR_5 = np.percentile(final_navs, 5)
+print("Value at Risk (5% Level):", round(VaR_5, 2))
+
+
+
+'''
+
+Interpretation (Real Finance Logic)
+Metric	Meaning
+Expected NAV	Most likely NAV after 30 days
+Best Case	Favourable return path
+Worst Case	Worst possible NAV movement
+Volatility of Outcomes	Variation in final NAV predictions
+VaR (5%)	There is a 5% chance NAV will fall below this value
+
+This is used for risk analysis & regulatory reporting.'''
