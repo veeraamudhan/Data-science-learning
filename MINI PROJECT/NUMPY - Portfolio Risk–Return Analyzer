@@ -1,0 +1,85 @@
+'''Mini Project: Portfolio Risk–Return Analyzer
+
+This mini project uses:
+✔ Arrays
+✔ Daily returns
+✔ Mean return
+✔ Variance
+✔ Volatility (std dev)
+✔ Covariance
+✔ Correlation
+✔ Dot product
+
+
+
+Problem Statement
+
+A client invests in three mutual funds:
+
+Fund	Units	NAV Day-1	NAV Day-2	NAV Day-3	NAV Day-4	NAV Day-5
+Equity	250	150	        153	        149	        155	        160
+Debt	400	104	        105	        106	        107	        108
+Liquid	1000	10.45	        10.46	        10.47	        10.48	        10.49
+
+Your tasks:
+
+Create a returns matrix for the 3 funds.
+
+Compute average return of each fund.
+
+Compute volatility of each fund.
+
+Compute correlation matrix between funds.
+
+Compute portfolio daily returns using weights.
+
+Compute portfolio volatility.
+'''
+
+print('Mini Project: Portfolio Risk–Return Analyzer')
+
+
+
+import numpy as np
+
+# 1️NAV data for 5 days (rows = days, columns = funds)
+nav_data = np.array([
+    [150, 104, 10.45],
+    [153, 105, 10.46],
+    [149, 106, 10.47],
+    [155, 107, 10.48],
+    [160, 108, 10.49]
+])
+
+# 2  Portfolio units
+units = np.array([250, 400, 1000])
+
+# 3️ Calculate daily returns
+returns = (nav_data[1:] - nav_data[:-1]) / nav_data[:-1]
+print("Daily Returns Matrix:\n", returns)
+
+# 4️ Mean return per fund
+mean_returns = np.mean(returns, axis=0)
+print("\nMean Returns:", mean_returns)
+
+# 5️Volatility (std deviation)
+volatility = np.std(returns, axis=0)
+print("Volatility per Fund:", volatility)
+
+# 6️ Correlation matrix
+correlation = np.corrcoef(returns.T)
+print("\nCorrelation Matrix:\n", correlation)
+
+# 7️ Calculate fund values
+values = nav_data[-1] * units
+total_value = np.sum(values)
+weights = values / total_value
+print("\nPortfolio Weights:", weights)
+
+# 8️ Portfolio daily returns using dot product
+portfolio_daily_returns = returns.dot(weights)
+print("\nPortfolio Daily Returns:", portfolio_daily_returns)
+
+# 9️Portfolio Volatility
+portfolio_volatility = np.std(portfolio_daily_returns)
+print("\nPortfolio Volatility:", portfolio_volatility)
