@@ -1,0 +1,106 @@
+'''pip install numpy'''
+
+print('Import NumPy')
+import numpy as np
+
+# From Python list
+arr = np.array([10, 20, 30, 40, 50])
+print(arr)
+print(type(arr))
+
+
+print('Creating Arrays')
+arr = np.array([10, 20, 30, 40, 50])
+
+print('Array Properties')
+print(arr.ndim)   # dimensions (1D)
+print(arr.size)   # number of elements
+print(arr.dtype)  # data type
+print(arr.shape)  # (5,)
+
+
+
+print('Creating Arrays Quickly')
+v = np.arange(1, 11)   # 1 to 10
+print(v)
+
+v = np.zeros(5)
+print(v)
+
+v = np.ones(4)
+print(v)
+
+v = np.linspace(1, 5, 5)   # 1 to 5 equally spaced
+print(v)
+
+print('Indexing & Slicing')
+arr = np.array([10, 20, 30, 40, 50])
+
+print(arr[0])       # 10
+print(arr[-1])      # 50
+print(arr[1:4])     # [20 30 40]
+
+
+print('Arithmetic on Arrays (Vectorization)')
+
+arr = np.array([10, 20, 30])
+
+print(arr + 5)      # [15 25 35]
+print(arr * 2)      # [20 40 60]
+print(arr / 10)     # [1. 2. 3.]
+
+
+print('Universal Functions (ufuncs)')
+
+arr = np.array([1, 4, 9, 16])
+
+print(np.sqrt(arr))    # [1. 2. 3. 4.]
+print(np.log(arr))     # natural log
+print(np.exp(arr))     # exponent
+
+
+print('Aggregate Functions')
+arr = np.array([10, 20, 30, 40])
+
+print(np.sum(arr))      # 100
+print(np.mean(arr))     # 25.0
+print(np.max(arr))      # 40
+print(np.min(arr))      # 10
+print(np.std(arr))      # standard deviation
+
+
+print('Boolean Filtering')
+
+arr = np.array([120, 80, 150, 95, 110])
+
+high_nav = arr[arr > 100]
+print(high_nav)
+
+
+print('Real Finance Example — Portfolio Value')
+
+navs = np.array([153.75, 106.35, 10.48])
+print(navs)
+
+units = np.array([250, 400, 1000])
+print(units)
+
+value = navs * units
+print("Fund-wise Value:", value)
+print("Total Portfolio Value:", np.sum(value))
+
+
+print('Finance Example 2: Daily Return Calculator')
+
+import numpy as np
+
+# NAV across 5 days
+nav = np.array([100, 102, 104, 103, 106])
+
+# Daily return formula: (Today's NAV - Yesterday's NAV) / Yesterday's NAV
+daily_returns = (nav[1:] - nav[:-1]) / nav[:-1]
+
+print("Daily Returns:", daily_returns)
+print("Average Daily Return:", np.mean(daily_returns))
+print("Volatility:", np.std(daily_returns))
+
