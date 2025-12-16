@@ -1,0 +1,150 @@
+print('Exercise 1 — Basic Statistics')
+
+
+import numpy as np
+nav = np.array([100, 102, 104, 103, 106])
+
+
+print('Mean NAV = ',np.mean(nav))
+print('Min NAV = ',np.min(nav))
+print('Max NAV = ',np.max(nav))
+print('Standard deviation = ',np.std(nav))
+print('Variance = ',np.var(nav))
+
+print('-------------------------------------------------------')
+
+print('Exercise 2 — Daily Returns')
+
+
+nav = np.array([150, 153, 149, 155, 160])
+
+
+'''Calculate:
+
+Daily returns
+
+Average daily return
+
+Volatility of returns'''
+
+Daily_returns =  (nav[1:] - nav[:-1]) / nav[:-1]
+print('Daily returns = ', Daily_returns)
+
+print('Average daily return = ', np.mean(Daily_returns))
+
+print('Volatility of returns = ', np.std(Daily_returns))
+
+print('-------------------------------------------------------')
+print('Exercise 3 — Boolean Filtering')
+
+returns = np.array([0.02, -0.01, 0.03, 0.015, -0.005])
+
+'''
+Only positive returns
+
+Only negative returns
+
+Count of negative days
+'''
+
+print('positive returns = ', returns[returns > 0])
+
+print('negative returns = ', returns[returns < 0])
+
+print(type(returns))
+pos_idx = np.where(returns > 0)
+
+
+
+pos_returns = returns[pos_idx]
+
+print('positive value1',pos_returns)
+
+
+positive_c = returns[returns > 0]
+
+#positive_count = np.sum[returns > 0 ]
+
+print('positive value', positive_c)
+
+
+neg_idx = np.where(returns < 0)
+
+
+
+neg_returns = returns[neg_idx]
+
+print('negative values', neg_returns)
+
+
+arr = np.array([10, -5, 0, 3, -2, 8, -1])
+
+positive_count = np.sum(arr > 0)
+negative_count = np.sum(arr < 0)
+
+print('Count of positive days = ',positive_count)
+print('Count of negative days = ',negative_count)
+
+
+
+
+
+
+arr = np.array([10, -5, 0, 3, -2, 8, -1])
+
+positive_count = np.sum(returns > 0)
+negative_count = np.sum(returns < 0)
+
+print('Count of positive days = ',positive_count)
+print('Count of negative days = ',negative_count)
+
+
+print('-------------------------------------------------------')
+print('Exercise 4 — 2D Matrix Basics')
+
+returns = np.array([
+    [0.02, 0.01, 0.001],
+    [-0.01, 0.02, 0.0015],
+    [0.03, 0.015, 0.002]
+])
+
+
+
+mean_return = np.mean(returns)
+
+print('Mean Daily Return', mean_return)
+
+
+volatility = np.std(returns)
+
+print("Volatility (Std Dev):", volatility)
+
+corr_matrix = np.corrcoef(returns.T)
+
+print("Correlation Matrix:\n", corr_matrix)
+
+
+print('-------------------------------------------------------')
+print('Exercise 5 — Portfolio Value')
+
+
+navs = np.array([153.75, 106.35, 10.48])
+
+
+units = np.array([250, 400, 1000])
+
+Value_per_fund = navs * units
+
+print('Value per fund', Value_per_fund)
+
+Total_Portfolio_Value = np.sum(Value_per_fund)
+print("Total Portfolio Value:", Total_Portfolio_Value)
+
+
+Weight = Value_per_fund / Total_Portfolio_Value
+
+
+
+
+
+print('Weight of each fund in the portfolio',Weight)
