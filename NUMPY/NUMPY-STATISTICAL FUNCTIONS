@@ -1,0 +1,86 @@
+'''NAV analysis, portfolio risk, fund performance, volatility
+
+✔ Mean (Average Return)
+✔ Variance (Risk Spread)
+✔ Standard Deviation (Volatility)
+✔ Real-world Portfolio Example
+✔ Daily Return Calculation
+
+'''
+print('NumPy Statistical Functions (Mean, Variance, Volatility)')
+
+import numpy as np
+
+nav = np.array([100, 102, 104, 103, 106])
+
+print('1.Mean (Average NAV)')
+
+avg_nav = np.mean(nav)
+print("Mean NAV:", avg_nav)
+
+print('2.Daily Returns')
+
+print('Daily return=(NAVtoday​−NAVyesterday​​)/NAVyesterday​')
+
+returns = (nav[1:] - nav[:-1]) / nav[:-1]
+print("Daily Returns:", returns)
+
+print('3.Mean Daily Return')
+
+mean_return = np.mean(returns)
+print("Mean Daily Return:", mean_return)
+
+print('4.Variance(Risk MEasure)')
+
+print("Variance = spread of returns. Higher variance → higher risk.  Lower variance → stable returns.")
+
+variance = np.var(returns)
+print("Variance:", variance)
+
+print('5.Standard Deviation(volatility)')
+
+print('Volatility = √variance Tells how much the returns swing.')
+
+volatility = np.std(returns)
+print("Volatility (Std Dev):", volatility)
+
+print('6.Real Finance Example - Portfolio Volatility')
+
+returns_matrix = np.array([
+    [0.02,  0.01,   0.001],   # Day 1
+    [-0.01, 0.02,  0.0015],   # Day 2
+    [0.03,  0.015,  0.002]    # Day 3
+])
+
+print('Volatility of each fund')
+vol = np.std(returns_matrix, axis=0)
+print("Volatility of each fund:", vol)
+
+print('Interpretation:  Equity fund (first column) → high volatility')
+print(' Debt → medium  Liquid → extremely low  This matches real finance behavior.')
+
+print('7.Covariance Matrix')
+print('shows how funds move together')
+
+cov_matrix = np.cov(returns_matrix.T)
+print("Covariance Matrix:\n", cov_matrix)
+
+
+print('8.Correlation Matrix')
+print(' correlation = how similar the movement is')
+
+corr_matrix = np.corrcoef(returns_matrix.T)
+print("Correlation Matrix:\n", corr_matrix)
+
+print('9.Annualized Volatility (Common in Risk Reports)')
+print('daily volatility ---> annualized ( approx. 252 trading days)')
+
+daily_vol = np.std(returns)
+annual_vol = daily_vol * np.sqrt(252)
+print("Annualized Volatility:", annual_vol)
+
+
+
+
+
+
