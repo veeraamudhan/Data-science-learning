@@ -1,0 +1,163 @@
+'''NumPy Random Numbers → Monte Carlo Simulation
+
+This is used heavily in finance for:
+
+NAV forecasting
+
+Portfolio return simulation
+
+Risk estimation
+
+Value-at-Risk (VaR)
+
+Scenario modelling
+
+
+
+NumPy Random Numbers
+
+NumPy’s np.random module gives:
+
+random numbers
+
+random integers
+
+random choices
+
+random normal distributions
+
+random matrices
+
+'''
+
+print('Random Integer')
+
+
+import numpy as np
+
+print(np.random.randint(1, 10))
+
+print('Random Array')
+
+arr = np.random.randint(1, 100, size=5)
+
+
+print(arr)
+
+
+print('Random Floating Numbers')
+arr = np.random.random(5)
+
+print(arr)
+
+
+print('Random Choice (Equally likely)')
+fund = np.random.choice(["Equity", "Debt", "Liquid"])
+print(fund)
+
+
+print('Random from Normal Distribution')
+
+#The normal distribution is VERY important in finance
+#(returns often follow near-normal distribution).
+
+returns = np.random.normal(loc=0.001, scale=0.02, size=10)
+print(returns)
+
+
+
+print('1: Simulating NAV Movements')
+
+
+#Say current NAV = 100, and daily returns follow:
+
+#Mean return = 0.1%
+
+#Volatility = 2%
+
+days = 10
+starting_nav = 100
+
+daily_returns = np.random.normal(0.001, 0.02, days)
+nav_series = starting_nav * np.cumprod(1 + daily_returns)
+#np.cumprod --> [1 2 3 4] ---> [1 2 6 24]
+print("Simulated NAV:", nav_series)
+
+
+
+print('2: Portfolio Return Simulation')
+
+#Portfolio weights:
+
+
+weights = np.array([0.5, 0.3, 0.2])
+
+
+'''Simulate 5 days of returns for:
+
+Equity (high risk)
+
+Debt (low risk)
+
+Liquid (stable)'''
+
+equity = np.random.normal(0.001, 0.02, 5)
+debt   = np.random.normal(0.0003, 0.005, 5)
+liquid = np.random.normal(0.00005, 0.0005, 5)
+
+returns_matrix = np.vstack([equity, debt, liquid]).T
+print("Returns Matrix:\n", returns_matrix)
+
+portfolio_returns = returns_matrix.dot(weights)
+print("\nPortfolio Returns:\n", portfolio_returns)
+
+
+
+
+print('Mini Monte Carlo Simulation (Very Useful in Finance)')
+#used by portfolio managers to predict future NAV.
+print('Simulate 1000 possible NAV outcomes after 30 days.')
+
+'''Assumptions:
+
+Daily mean return = 0.1%
+
+Daily volatility = 1.5%
+
+Starting NAV = 100
+
+'''
+simulations = 1000
+days = 30
+starting_nav = 100
+
+final_navs = []
+
+for i in range(simulations):
+    daily_returns = np.random.normal(0.001, 0.015, days)
+    nav_series = starting_nav * np.cumprod(1 + daily_returns)
+    final_navs.append(nav_series[-1])
+
+final_navs = np.array(final_navs)
+
+
+print('simulations : ',simulations, 'days:',days, 'starting_nav :', starting_nav)
+print('daily returns',daily_returns)
+print('nav series',nav_series)
+print("Average NAV after 30 days:", np.mean(final_navs))
+print("Best Case NAV:", np.max(final_navs))
+print("Worst Case NAV:", np.min(final_navs))
+print("Volatility of outcomes:", np.std(final_navs))
+
+
+'''
+
+Bonus: Value at Risk (VaR)
+
+Compute the 5% worst-case loss:
+
+
+    VaR_5 = np.percentile(final_navs, 5)
+print("Value at Risk (5% level):", VaR_5)
+
+'''
