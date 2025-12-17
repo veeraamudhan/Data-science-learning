@@ -1,0 +1,193 @@
+print('PART 1 — Practice Exercises (Easy → Advanced)')
+print('Exercise 1 — Generate Random NAV Values')
+
+print('Task: Generate 7 random NAV values (between 90 and 120).')
+
+import numpy as np
+
+print('random number : ', np.random.randint(90,120))
+
+
+print('-----------------------------------------')
+print('Exercise 2 — Random Daily Returns (Normal Distribution)')
+
+returns = np.random.normal(0.001,0.015,10)
+print(returns)
+
+print('--------------------------------------------')
+
+mean = 0.001
+
+std = 0.015
+size = 10
+
+returns = np.random.normal(mean, std, size)
+print(returns)
+
+print('-------------------------------------------')
+print('Exercise 3 — Random Choice (Fund Selection)')
+print(' Given funds: ["Equity", "Debt", "Hybrid", "Liquid"]')
+
+
+print('Randomly pick a fund 5 times.')
+
+for i in range(5):
+    fund = np.random.choice(["Equity", "Debt", "Hybrid", "Liquid"])
+    print(fund)
+
+print('--------------------------------------------')
+
+print(' Exercise 4 — Simulate NAV movement')
+
+#NAV starts at 100.
+
+#Simulate 5 days using:
+
+#daily return = random normal
+days = 5
+starting_nav = 100
+
+daily_returns = np.random.normal(0.001,0.02,5)
+nav_series = starting_nav * np.cumprod(1 + daily_returns)
+
+print('Simulated NAV = ', nav_series)
+
+print('------------------------------------')
+print('Exercise 5 — Portfolio Random Simulation')
+
+#Simulate 5 days of returns for:
+
+#Equity (mean: 0.001, vol: 0.02)
+
+#Debt (mean: 0.0003, vol: 0.005)
+
+#Liquid (mean: 0.00005, vol: 0.0005)
+
+#👉 Combine into a return matrix (5 × 3).
+#👉 Calculate portfolio returns using:
+
+weights = np.array([0.6, 0.3, 0.1])
+equity = np.random.normal(0.001, 0.02, 5)
+debt   = np.random.normal(0.0003, 0.005, 5)
+liquid = np.random.normal(0.00005, 0.0005, 5)
+
+returns_matrix = np.vstack([equity, debt, liquid]).T
+print("Returns Matrix:\n", returns_matrix)
+
+portfolio_returns = returns_matrix.dot(weights)
+print("\nPortfolio Returns:\n", portfolio_returns)
+
+
+
+print('----------------------------------')
+print(' Exercise 6 — Compute Portfolio Risk (Volatility)')
+'''
+Given the simulated portfolio returns, compute:
+
+mean return
+
+volatility (std dev)
+
+best day
+
+worst day
+'''
+print(' 1️NAV data for 5 days (rows = days, columns = funds)')
+nav_data = np.array([
+    [150, 104, 10.45],
+    [153, 105, 10.46],
+    [149, 106, 10.47],
+    [155, 107, 10.48],
+    [160, 108, 10.49]
+])
+print(nav_data)
+print(' 2  Portfolio units')
+units = np.array([250, 400, 1000])
+print(units)
+print(' 3️ Calculate daily returns')
+returns = (nav_data[1:] - nav_data[:-1]) / nav_data[:-1]
+print("Daily Returns Matrix:\n", returns)
+
+print(' 4️ Mean return per fund')
+mean_returns = np.mean(returns, axis=0)
+print("\nMean Returns:", mean_returns)
+
+print('5️Volatility (std deviation)')
+volatility = np.std(returns, axis=0)
+print("Volatility per Fund:", volatility)
+
+print('6️ Correlation matrix')
+correlation = np.corrcoef(returns.T)
+print("\nCorrelation Matrix:\n", correlation)
+
+print('7️ Calculate fund values')
+values = nav_data[-1] * units
+total_value = np.sum(values)
+weights = values / total_value
+print("\nPortfolio Weights:", weights)
+
+print(' 8️ Portfolio daily returns using dot product')
+portfolio_daily_returns = returns.dot(weights)
+print("\nPortfolio Daily Returns:", portfolio_daily_returns)
+
+print(' 9️Portfolio Volatility')
+portfolio_volatility = np.std(portfolio_daily_returns)
+print("\nPortfolio Volatility:", portfolio_volatility)
+
+print('10 Best day and Worst Day')
+print('Best day', np.max(portfolio_daily_returns))
+print('Worst Day',np.min(portfolio_daily_returns))
+
+
+print(' Exercise 7 — Generate 100 random portfolios')
+'''
+Each portfolio consists of random weights that sum to 1.
+Hint:
+
+
+'''
+
+mean_returns = np.array([
+    equity.mean(),
+    debt.mean(),
+    liquid.mean()
+])
+
+weights = np.random.random(3)
+weights = weights / weights.sum()
+
+portfolio_return = weights.dot(mean_returns)
+
+
+num_portfolios = 100
+
+portfolio_returns = []
+portfolio_weights = []
+
+
+for i in range(num_portfolios):
+    weights = np.random.random(3)
+    weights = weights / weights.sum()
+
+    expected_return = weights.dot(mean_returns)
+
+    portfolio_weights.append(weights)
+    portfolio_returns.append(expected_return)
+    print('Portfolio', i, ' --> Return :' , portfolio_returns[i], 'Weights :',portfolio_weights[i]) 
+    print(f'Portfolio {i+1} --> Return: {expected_return:.6f}, Weights: {weights}')
+
+portfolio_returns = np.array(portfolio_returns)
+portfolio_weights = np.array(portfolio_weights)
+
+
+#print(portfolio_returns)
+#print(portfolio_weights)
+
+
+
+
+
+
+
+'''
+👉 Calculate expected return for each portfolio.'''
