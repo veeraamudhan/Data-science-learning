@@ -1,0 +1,214 @@
+# 🔹 1️⃣ Importing Pandas
+
+
+#import pandas as pd
+
+
+print('2 Creating a **Series** (1D)')
+
+
+#A **Series** is like a single column in Excel or SQL.
+
+
+import pandas as pd
+
+s = pd.Series([10, 20, 30, 40])
+print(s)
+'''
+
+Output:
+
+```
+0    10
+1    20
+2    30
+3    40
+dtype: int64
+```
+
+---
+'''
+print('3️⃣ Creating a **DataFrame** (2D Table)')
+'''
+Like an SQL table / Excel sheet.
+
+```python'''
+data = {
+    "Client": ["Veera", "Aathi", "Ezhil"],
+    "PAN": ["ABCDE1234Z", "QWERT9876A", "ZXCVB5678L"],
+    "NAV": [153.75, 106.35, 10.48]
+}
+
+df = pd.DataFrame(data)
+print(df)
+'''```
+
+Output:
+
+```
+  Client         PAN     NAV
+0  Veera   ABCDE1234Z  153.75
+1  Aathi   QWERT9876A  106.35
+2  Ezhil   ZXCVB5678L   10.48
+```
+
+---
+'''
+print('4️⃣ Reading CSV Files')
+'''
+Assume you have a file called `nav_data.csv`.
+
+```python'''
+df = pd.read_csv("nav.csv")
+print(df.head())
+print(df.tail())
+'''```
+
+* `head()` → shows top 5 rows
+* `tail()` → last 5 rows
+
+---
+
+print('5️⃣ Reading Excel Files')
+
+```python
+df = pd.read_excel("WORKSHEET PLAN.xlsx")
+print(df.head())
+print(df.tail())
+
+
+```
+
+---
+'''
+print('6️⃣ Exploring the DataFrame')
+'''
+```python'''
+df.info()       # column names, data types
+df.describe()   # summary statistics
+df.shape        # rows, columns
+df.columns      # list of columns
+'''```
+
+---
+'''
+print('7️⃣ Selecting Columns')
+'''
+```python'''
+print(df["Date"])             # single column
+print(df[["Date", "Equity"]])    # multiple columns
+'''```
+
+---
+'''
+print('8️⃣ Selecting Rows (using loc & iloc)')
+
+print('✔ `iloc` → index-based (like position)')
+'''
+```python'''
+print(df.iloc[0] )      # first row
+print(df.iloc[0:2])     # rows 0 and 1
+'''```
+'''
+print('✔ `loc` → label-based (column names, conditions)')
+'''
+```python'''
+df.loc[0]             # first row
+df.loc[df["Equity"] > 152]
+'''```
+
+---
+'''
+print('9️⃣ Filtering Rows (SQL WHERE equivalent)')
+'''
+```python'''
+high_nav = df[df["Debt"] > 105]
+print(high_nav)
+'''```
+
+---
+'''
+print('10 Real Finance Example (Small)')
+'''
+Imagine this DataFrame:
+
+```python'''
+data = {
+    "Fund": ["Equity", "Debt", "Liquid", "Equity", "Debt"],
+    "NAV": [150.5, 105.2, 10.45, 151.3, 105.7],
+    "Units": [100, 200, 500, 150, 180]
+}
+
+df = pd.DataFrame(data)
+'''```
+
+### ✔ Calculate value of each holding
+
+```python'''
+df["Value"] = df["NAV"] * df["Units"]
+print(df)
+'''```
+
+### ✔ Total portfolio value
+
+```python'''
+print("Total Value:", df["Value"].sum())
+'''```
+
+### ✔ Group by fund type (SQL GROUP BY)
+
+```python'''
+print(df.groupby("Fund")["Value"].sum())
+'''```'''
+print('5️⃣ Reading Excel Files')
+'''
+```python'''
+df = pd.read_excel("WORKSHEET PLAN.xlsx")
+print(df.head())
+print(df.tail())
+'''---
+'''
+print('Mini Exercise (You do this now)')
+'''
+### Use Pandas to create this DataFrame:
+
+| Client | PAN        | Fund   | NAV    | Units |
+| ------ | ---------- | ------ | ------ | ----- |
+| Veera  | ABCDE1234Z | Equity | 153.75 | 250   |
+| Aathi  | QWERT9876A | Debt   | 106.35 | 400   |
+| Ezhil  | ZXCVB5678L | Liquid | 10.48  | 1000  |
+
+'''
+print("**Task:**\n1. Add a new column `Value = NAV * Units`\n2. Filter where Value > 20,000\n3. Print only Client, Fund, Value  \n4. Find the total portfolio value")
+data = {
+    "Client": ["Veera", "Aathi", "Ezhil"],
+    "PAN": ["ABCDE1234Z", "QWERT9876A", "ZXCVB5678L"],
+    "Fund": ["Equity","Debt","Liquid"],
+    "NAV": [153.75, 106.35, 10.48],
+    "Units": [250,400,1000]
+}
+
+df = pd.DataFrame(data)
+print(df)
+
+
+df["Value"] = df["NAV"] * df["Units"]
+print(df)
+
+
+print(df.loc[df["Value"] > 20000])
+
+print(df["Client"])
+print(df["Fund"])
+print(df["Value"])   
+
+print("Total Value:", df["Value"].sum())
+'''
+**Task:**
+
+1. Add a new column `Value = NAV * Units`
+2. Filter where Value > 20,000
+3. Print only Client, Fund, Value
+4. Find the total portfolio value
+'''
+---
