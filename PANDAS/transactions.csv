@@ -1,0 +1,9 @@
+TransactionID,Client,Fund,Type,Units,Date
+1001,Veera,Equity,Buy,50,01-01-2025
+1002,Veera,Debt,Buy,100,01-01-2025
+1003,Veera,Liquid,Sell,200,02-01-2025
+1004,Aathi,Equity,Buy,75,03-01-2025
+1005,Aathi,Debt,Sell,50,03-01-2025
+1006,Ezhil,Liquid,Buy,500,04-01-2025
+1007,Kanmani,Equity,Buy,40,05-01-2025
+1008,Kanmani,Liquid,Buy,300,05-01-2025
