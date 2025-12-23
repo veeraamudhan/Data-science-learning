@@ -1,0 +1,25 @@
+print('Example 1: Read NAV history & compute returns')
+import pandas as pd
+nav = pd.read_csv("nav_history.csv")
+nav['Date'] = pd.to_datetime(nav['Date'])
+nav = nav.set_index('Date')
+
+nav_returns = nav.pct_change()
+print(nav_returns)
+
+print('Example 2: Read transactions & calculate value')
+txns = pd.read_csv("transactions.csv")
+hold = pd.read_csv("client_holdings.csv")
+
+nav_map = hold.groupby("Fund")["NAV"].last().to_dict()
+
+txns["NAV"] = txns["Fund"].map(nav_map)
+txns["Txnvalue"] = txns["Units"] * txns["NAV"]
+
+print(txns)
+
+print("Example 3: Write cleaned dataset to Excel")
+
+clean = hold[['Client','Fund']]#,'Value']]
+clean.to_excel("clean_holdings.xlsx", index = False)
+print('cleaned dataset printed')
