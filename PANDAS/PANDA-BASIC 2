@@ -1,0 +1,70 @@
+
+print('PANDAS — Reading & Writing Data')
+
+import pandas as pd
+
+print('client_holdings')
+hold = pd.read_csv("client_holdings.csv")
+print(hold.head())
+print('nav_history')
+nav = pd.read_csv("nav_history.csv")
+print(nav.head())
+print('transactions')
+txns = pd.read_csv("transactions.csv")
+print(txns.head())
+print('client_master')
+cm = pd.read_csv("client_master.csv")
+print(cm.head())
+
+
+print('Reading Excel Files')
+
+df = pd.read_excel('client_nav_details.xlsx')
+print(df.head())
+df = pd.read_excel("client_nav_details.xlsx", sheet_name="client_holdings")
+print(df.head())
+
+df = pd.read_excel("client_nav_details.xlsx", sheet_name=["client_holdings","nav_history"])
+print(df)
+
+
+print('Writing Excel Files')
+
+df = pd.read_excel('client_nav_details.xlsx')
+print(df.head())
+print(type(df))
+
+df.to_excel("client_nav_details1.xlsx", index = False)
+print(df)
+
+with pd.ExcelWriter("combined_data.xlsx") as writer:
+    hold.to_excel(writer,sheet_name ="Holdings", index = False)
+    txns.to_excel(writer, sheet_name="Transactions", index=False)
+    nav.to_excel(writer, sheet_name ="NAV", index=True)
+
+print('write completed into client_nav_details1.xlsx')
+
+print("Reading json files")
+
+df = pd.read_json("portfolio.json")
+print(df)
+
+df = pd.read_json ("transactions.json", orient = "records")
+print(df)
+
+df.to_json("output.json", orient = "records", indent = 4)
+print("writing a JSON is completed")
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
