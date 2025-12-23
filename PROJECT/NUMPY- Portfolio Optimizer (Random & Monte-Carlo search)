@@ -1,0 +1,123 @@
+#Project A — Portfolio Optimizer (Random & Monte-Carlo search)
+
+#pip install pandas # matplotlib
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+print(pd.__version__)
+print("Matplotlib ready")
+
+
+
+
+# portfolio_optimizer.py
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# ---------- CONFIG ----------
+CSV_FILE = "nav.csv"   # or None to simulate data
+SIMULATIONS = 5000
+TRADING_DAYS = 252
+RISK_FREE_RATE_ANNUAL = 0.04      # 4% annual risk-free (adjust as needed)
+# ----------------------------
+
+def load_data(csv_file):
+    if csv_file:
+        df = pd.read_csv(csv_file, parse_dates=["Date"], index_col="Date")
+        # if CSV contains NAVs, convert to returns:
+        if (df <= 1).all().all():  # if NAVs look like returns (<=1), keep
+            returns = df.values
+            # but better: assume NAVs > 1 are NAVs and convert:
+        # compute daily returns from NAVs (pct change)
+        returns_df = df.pct_change().dropna()
+        return returns_df
+    else:
+        # simulate returns if no file provided
+        np.random.seed(42)
+        days = 252 * 2  # 2 years of history
+        # simulate 3 funds with different characteristics
+        mu = np.array([0.0006, 0.00025, 0.00005])   # daily means
+        sigma = np.array([0.015, 0.005, 0.0008])    # daily std dev
+        sim = np.random.normal(loc=mu, scale=sigma, size=(days, 3))
+        returns_df = pd.DataFrame(sim, columns=["Equity", "Debt", "Liquid"])
+        return returns_df
+
+def portfolio_metrics(weights, mean_returns, cov_matrix, trading_days=252, rf_annual=0.04):
+    # weights: 1D numpy array
+    # Mean daily return of portfolio:
+    port_ret_daily = np.dot(weights, mean_returns)  # daily
+    # Annualize:
+    port_ret_annual = port_ret_daily * trading_days
+    # Volatility (annualized)
+    port_var_daily = np.dot(weights.T, np.dot(cov_matrix, weights))
+    port_vol_annual = np.sqrt(port_var_daily) * np.sqrt(trading_days)
+    # Sharpe (annual)
+    sharpe = (port_ret_annual - rf_annual) / port_vol_annual if port_vol_annual != 0 else 0
+    return port_ret_annual, port_vol_annual, sharpe
+
+def run_simulation(returns_df, simulations=5000, trading_days=252, rf_annual=0.04):
+    mean_daily = returns_df.mean().values      # mean daily returns, shape (n_assets,)
+    cov_daily = returns_df.cov().values        # daily covariance matrix
+    n_assets = len(mean_daily)
+
+    results = np.zeros((simulations, 3 + n_assets))  
+    # columns: [ret, vol, sharpe, w1, w2, ...]
+    for i in range(simulations):
+        w = np.random.random(n_assets)
+        w /= np.sum(w)
+        ret, vol, sharpe = portfolio_metrics(w, mean_daily, cov_daily, trading_days, rf_annual)
+        results[i, 0] = ret
+        results[i, 1] = vol
+        results[i, 2] = sharpe
+        results[i, 3:] = w
+
+    columns = ["Return", "Volatility", "Sharpe"] + [f"W_{c}" for c in returns_df.columns]
+    results_df = pd.DataFrame(results, columns=columns)
+    return results_df
+
+def find_optimal(results_df):
+    max_sharpe = results_df.loc[results_df["Sharpe"].idxmax()]
+    min_vol = results_df.loc[results_df["Volatility"].idxmin()]
+    return max_sharpe, min_vol
+
+def plot_results(results_df, max_sharpe, min_vol):
+    plt.figure(figsize=(10,6))
+    scatter = plt.scatter(results_df["Volatility"], results_df["Return"], c=results_df["Sharpe"],
+                          cmap="viridis", alpha=0.6)
+    plt.colorbar(scatter, label="Sharpe Ratio")
+    # highlight selected portfolios
+    plt.scatter(max_sharpe["Volatility"], max_sharpe["Return"], color="r", marker="*", s=200, label="Max Sharpe")
+    plt.scatter(min_vol["Volatility"], min_vol["Return"], color="g", marker="X", s=150, label="Min Vol")
+    plt.xlabel("Volatility (Annualized)")
+    plt.ylabel("Return (Annualized)")
+    plt.title("Simulated Portfolios - Risk vs Return")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+def pretty_print_portfolio(row, asset_names):
+    print("Portfolio Metrics:")
+    print(f"  Annual Return : {row['Return']*100:.2f}%")
+    print(f"  Annual Vol    : {row['Volatility']*100:.2f}%")
+    print(f"  Sharpe Ratio  : {row['Sharpe']:.3f}")
+    for idx, asset in enumerate(asset_names):
+        print(f"  {asset:10s} weight: {row[f'W_{asset}']*100:.2f}%")
+
+def main():
+    returns_df = load_data(CSV_FILE)
+    results_df = run_simulation(returns_df, simulations=SIMULATIONS,
+                                trading_days=TRADING_DAYS, rf_annual=RISK_FREE_RATE_ANNUAL)
+    max_sharpe, min_vol = find_optimal(results_df)
+    print("\n--- Best Sharpe Portfolio ---")
+    pretty_print_portfolio(max_sharpe, returns_df.columns)
+    print("\n--- Minimum Volatility Portfolio ---")
+    pretty_print_portfolio(min_vol, returns_df.columns)
+    plot_results(results_df, max_sharpe, min_vol)
+    # Save top portfolios
+    results_df.to_csv("portfolio_simulations.csv", index=False)
+    print("\nAll simulations saved to portfolio_simulations.csv")
+
+if __name__ == "__main__":
+    main()
